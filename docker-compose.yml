@@ -1,0 +1,20 @@
+services:
+  reverse_proxy:
+    container_name: reverse_proxy
+    build: reverse_proxy/
+    networks:
+      - reverse_proxy_network
+    ports:
+      - 80:80
+
+    volumes:
+      - ./reverse_proxy/apache2:/etc/apache2
+  nodejs:
+    container_name: node_server
+    build: node_server/
+    networks:
+      - reverse_proxy_network
+
+networks:
+  reverse_proxy_network:
+    driver: bridge

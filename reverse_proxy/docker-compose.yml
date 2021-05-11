@@ -1,0 +1,9 @@
+services:
+  apache2:
+    container_name: reverse_proxy
+    build: .
+    command: apachectl -D FOREGROUND
+    ports:
+      - 8888:80
+    volumes:
+      - ./apache2:/etc/apache2
