@@ -6,9 +6,18 @@ services:
       - reverse_proxy_network
     ports:
       - 80:80
-
     volumes:
       - ./reverse_proxy/apache2:/etc/apache2
+
+  nginx_stream:
+    container_name: streaming_server
+    build: streaming_server/
+    networks:
+      - reverse_proxy_network
+
+    volumes:
+      - ./streaming_server/nginx/conf:/etc/nginx
+      - ./streaming_server/nginx/html:/usr/share/nginx/html
   nodejs:
     container_name: node_server
     build: node_server/
