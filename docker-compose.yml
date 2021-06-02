@@ -1,3 +1,4 @@
+# communication between services uses service name not container name
 services:
   reverse_proxy:
     container_name: reverse_proxy
@@ -10,15 +11,20 @@ services:
       - ./reverse_proxy/apache2:/etc/apache2
 
   cdn:
-    container_name: cdn
     build: cdn/
     networks:
       - reverse_proxy_network
+
+    deploy:
+      mode: replicated
+      # if container is down use the other replica
+      # replicas are only standby and one of the replicas are used when the used one is down
+      replicas: 2
+
     volumes:
       - ./cdn/nginx/conf/:/etc/nginx
 
   home:
-    container_name: home
     build: home/
     networks:
       - reverse_proxy_network
