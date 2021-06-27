@@ -32,6 +32,22 @@ services:
       - ./home/conf/:/etc/nginx
       - ./home/html/:/usr/share/nginx/html
 
+  auth_server:
+    container_name: auth_server
+    build: auth_server/
+    networks:
+      - reverse_proxy_network
+
+  streamer:
+    container_name: streamer
+    build: video_streaming/
+    networks:
+      - reverse_proxy_network
+
+    volumes:
+      - ./video_streaming/conf/:/etc/nginx
+      - ./video_streaming/media/:/usr/share/nginx/media
+
 networks:
   reverse_proxy_network:
     driver: bridge
